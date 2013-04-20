@@ -1,5 +1,8 @@
 object BinarySearch {
   def binarySearch(v: Int, vs: Array[Int]): Boolean = {
+    /*
+     * vs: **sorted** array
+     */
     if (vs.length == 0) false
     var left: Int = 0
     var right: Int = vs.length - 1
