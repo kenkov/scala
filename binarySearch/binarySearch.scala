@@ -15,6 +15,9 @@ object BinarySearch {
     return vs(left) == v
   }
   def binarySearchNewIndex(v: Int, vs: Array[Int]): Boolean = {
+    /*
+     * こっちの方がindex がきれい
+     */
     if (vs.length == 0) false
     var left: Int = 0
     var right: Int = vs.length
