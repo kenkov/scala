@@ -63,12 +63,48 @@ object Sort {
     }
     lst
   }
+
+  def merge(xs: Array[Int], ys: Array[Int]): Array[Int] = {
+    var xIndex: Int = xs.length - 1
+    var yIndex: Int = ys.length - 1
+    var list: List[Int] = List()
+    while (xIndex >= 0 && yIndex >= 0) {
+      if(xs(xIndex) <= ys(yIndex)) {
+        list = ys(yIndex) :: list
+        yIndex -= 1
+      } else {
+        list = xs(xIndex) :: list
+        xIndex -= 1
+      }
+    }
+    while (yIndex >= 0) {
+      list = ys(yIndex) :: list
+      yIndex -= 1
+    }
+    while (xIndex >= 0) {
+      list = xs(xIndex) :: list
+      xIndex -= 1
+    }
+    list.toArray
+  }
+
+  def mergeSort(xs: Array[Int]): Array[Int] = {
+    if (xs.length == 1) xs
+    else {
+      val left = 0
+      val right = xs.length
+      val mid: Int = left + (right - left) / 2
+      merge(mergeSort(xs.slice(0, mid)), mergeSort(xs.slice(mid, xs.length)))
+    }
+  }
+
 }
 
 object Main {
   def main(args: Array[String]) {
-    Sort.bubbleSort(Array(1,4,3,5,6,3,10,1)) foreach println
-    Sort.selectionSort(Array(1,4,3,5,6,3,10,1)) foreach println
-    Sort.insertionSort(Array(1,4,3,5,6,3,10,1)) foreach println
+    Sort.bubbleSort(Array(1,4,3,5,6,3,9,1)) foreach println
+    Sort.selectionSort(Array(1,4,3,5,6,3,9,1)) foreach println
+    Sort.insertionSort(Array(1,4,3,5,6,3,9,1)) foreach println
+    Sort.mergeSort(Array(1,4,3,5,6,3,9,1)) foreach println
   }
 }
