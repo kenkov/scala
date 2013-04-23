@@ -1,4 +1,4 @@
-object Sort {
+object ArraySort {
   def bubbleSort(xs: Array[Int]): Array[Int] = {
     /*
      * 非破壊的バブルソート
@@ -100,11 +100,67 @@ object Sort {
 
 }
 
+object ListSort {
+  def insert(x: Int, xs: List[Int]): List[Int] = {
+    xs match {
+      case List() => List(x)
+      case y :: ys if x < y => x :: xs
+      case y:: ys => y :: insert(x, ys)
+    }
+  }
+  def insertionSort(xs: List[Int]): List[Int] = {
+    xs match {
+      case List() => List()
+      case x :: xs1 => insert(x, insertionSort(xs1))
+    }
+  }
+
+  def merge(xs: List[Int], ys: List[Int]): List[Int] = {
+    (xs, ys) match {
+      case (List(), yys) => yys
+      case (xxs, List()) => xxs
+      case (x :: xxs, y :: yys) =>
+        if (x <= y)
+          x :: merge(xxs, ys)
+        else
+          y :: merge(xs, yys)
+    }
+  }
+  def mergeSort(xs: List[Int]): List[Int] = {
+    val xsLen = xs.length
+    if (xsLen <= 1)
+      xs
+    else {
+      val left = 0
+      val right = xsLen
+      val mid: Int = left + (right - left) / 2
+      merge(mergeSort(xs.take(mid)), mergeSort(xs.drop(mid)))
+    }
+  }
+}
+
 object Main {
   def main(args: Array[String]) {
-    Sort.bubbleSort(Array(1,4,3,5,6,3,9,1)) foreach println
-    Sort.selectionSort(Array(1,4,3,5,6,3,9,1)) foreach println
-    Sort.insertionSort(Array(1,4,3,5,6,3,9,1)) foreach println
-    Sort.mergeSort(Array(1,4,3,5,6,3,9,1)) foreach println
+    val testArray = Array(1,4,3,5,6,3,9,1)
+    val testList = List(1,4,3,5,6,3,9,1)
+    println("ArraySort.bubbleSort")
+    ArraySort.bubbleSort(testArray) foreach print
+    println
+    println("ArraySort.selectionSort")
+    ArraySort.selectionSort(testArray) foreach print
+    println
+    println("ArraySort.insertionSort")
+    ArraySort.insertionSort(testArray) foreach print
+    println
+    println("ArraySort.mergeSort")
+    ArraySort.mergeSort(testArray) foreach print
+    println
+
+    println("ListSort.insertionSort")
+    ListSort.insertionSort(testList) foreach print
+    println
+    println("ListSort.mergeSort")
+    ListSort.mergeSort(testList) foreach print
+    println
   }
 }
