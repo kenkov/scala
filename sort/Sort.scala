@@ -115,16 +115,14 @@ object ListSort {
     }
   }
 
-  def merge(xs: List[Int], ys: List[Int]): List[Int] = {
-    (xs, ys) match {
-      case (List(), yys) => yys
-      case (xxs, List()) => xxs
-      case (x :: xxs, y :: yys) =>
-        if (x <= y)
-          x :: merge(xxs, ys)
-        else
-          y :: merge(xs, yys)
-    }
+  def merge(xs: List[Int], ys: List[Int]): List[Int] = (xs, ys) match {
+    case (List(), yys) => yys
+    case (xxs, List()) => xxs
+    case (x :: xxs, y :: yys) =>
+      if (x <= y)
+        x :: merge(xxs, ys)
+      else
+        y :: merge(xs, yys)
   }
   def mergeSort(xs: List[Int]): List[Int] = {
     val xsLen = xs.length
@@ -136,6 +134,14 @@ object ListSort {
       val mid: Int = left + (right - left) / 2
       merge(mergeSort(xs.take(mid)), mergeSort(xs.drop(mid)))
     }
+  }
+
+  def quickSort(xs: List[Int]): List[Int] = xs match {
+    /* reference
+    / http://techtipshoge.blogspot.com/2011/06/haskell3.html
+    */
+    case List() => List()
+    case x :: xs => quickSort(xs.filter(_ <= x)) ::: List(x) ::: quickSort(xs.filter(_ > x))
   }
 }
 
@@ -161,6 +167,9 @@ object Main {
     println
     println("ListSort.mergeSort")
     ListSort.mergeSort(testList) foreach print
+    println
+    println("ListSort.quickSort")
+    ListSort.quickSort(testList) foreach print
     println
   }
 }
